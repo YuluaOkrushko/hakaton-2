@@ -1,0 +1,17 @@
+<p class="data__day">{{this.date}}</p>
+<div class="data__wrapper">
+    <div class="data__day--month">
+        <span class="month">{{this.day}}</span>
+        <span class="time">{{this.time}}</span>
+    </div>
+    <ul class="data__sun">
+        <li class="sunrise">
+            <img src="{{this.img}}" alt="sunrise" class="sunrise__icon" />
+            <span class="sunrise__time">{{this.sunrise}}</span>
+        </li>
+        <li class="twilight">
+            <img src="./assets/icons/data__sunrise--sunset/sunset.svg" alt="sunset" class="twilight__icon" />
+            <span class="twilight__time">{{this.sunset}}</span>
+        </li>
+    </ul>
+</div>
