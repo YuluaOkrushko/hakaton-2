@@ -257,14 +257,16 @@ document
 document
     .querySelector(".js-save-to-favorites")
     .addEventListener("click", () => {
-        let favorites = window.localStorage.getItem("favorites");
-        favorites = JSON.parse(favorites);
-        if (!favorites) {
-            favorites = new Array();
+        if (inputText.value.trim()) {
+            let favorites = window.localStorage.getItem("favorites");
+            favorites = JSON.parse(favorites);
+            if (!favorites) {
+                favorites = new Array();
+            }
+            favorites.push(inputText.value.trim());
+            window.localStorage.setItem("favorites", JSON.stringify(favorites));
+            renderFavorites();
         }
-        favorites.push(inputText.value.trim());
-        window.localStorage.setItem("favorites", JSON.stringify(favorites));
-        renderFavorites();
     });
 
 const renderFavorites = () => {
@@ -294,30 +296,71 @@ const renderFavorites = () => {
 renderFavorites();
 
 const initCharts = (dailyWeather) => {
+    document
+        .querySelector(".js-show-chart")
+        .addEventListener("click", (event) => {
+            event.preventDefault();
+            let chartBlock = document.querySelector(".chart-wrapper");
+            if (chartBlock.style.display == "none") {
+                chartBlock.style.display = "block";
+                event.target.text = "Hide chart";
+            } else {
+                event.target.text = "Show chart";
+                chartBlock.style.display = "none";
+            }
+        });
+
     let ctx = document.querySelector(".js-chart").getContext("2d");
     let labels = [];
-    let datasets = [];
 
-    let temperatureData = [];
-    dailyWeather.map((item, index) => {
+    let temperatureData = [],
+        humidityData = [],
+        windSpeedData = [],
+        pressureData = [];
+    dailyWeather.map((item) => {
         labels.push(item.day + "," + item.month);
         temperatureData.push(item.temp.day);
+        humidityData.push(item.humidity);
+        windSpeedData.push(item.wind_speed);
+        pressureData.push(item.pressure);
     });
-    let temperature = [{
-        label: "Temperature",
-        data: temperatureData,
-        fill: false,
-        borderColor: "rgb(75, 192, 192)",
-    }, ];
+    let datasets = [{
+            label: "Temperature ",
+            data: temperatureData,
+            borderColor: "rgb(255, 207, 8)",
+            fill: false,
+            lineTension: 0,
+        },
+        {
+            label: "Humidity, %",
+            data: humidityData,
+            borderColor: "rgb(9, 6, 234)",
+            fill: false,
+            lineTension: 0,
+        },
+        {
+            label: "Wind Speed, m/s",
+            data: windSpeedData,
+            borderColor: "rgb(235, 155, 5)",
+            fill: false,
+            lineTension: 0,
+        },
+        {
+            label: "Atmosphere Pressure m/m",
+            data: pressureData,
+            borderColor: "rgb(5, 120, 6)",
+            fill: false,
+            lineTension: 0,
+        },
+    ];
 
-    datasets.push(temperature);
     let config = {
         type: "line",
-        labels: labels,
-
-        datasets: datasets,
+        data: {
+            labels: labels,
+            datasets: datasets,
+        },
         options: {},
     };
-    console.log(config);
-    let myLineChart = new Chart(ctx, config);
+    let lineChart = new Chart(ctx, config);
 };
