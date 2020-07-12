@@ -241,7 +241,7 @@ const clock = () => {
     clockElement.textContent = `${hours}:${minutes}:${seconds}`;
 };
 const prepareWeatherIconUrl = (icon, size = "") => {
-    return "http://openweathermap.org/img/wn/" + icon + size + ".png";
+    return "https://openweathermap.org/img/wn/" + icon + size + ".png";
 };
 const geolocationWeather = () => {
     navigator.geolocation.getCurrentPosition(success);

@@ -1,5 +1,5 @@
 export default function getWeather(method, params = {}) {
-    const baseApiUrl = "http://api.openweathermap.org/data/2.5/";
+    const baseApiUrl = "https://api.openweathermap.org/data/2.5/";
     const url = new URL(baseApiUrl + method);
     params.units = "metric";
     params.appid = "d2e4759712b1aa2779c0cb79fc29cf62";
