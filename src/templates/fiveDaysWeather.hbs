@@ -1,14 +1,13 @@
 <ul class="Five-days-list">
     {{#each this}}
-    <li class="FiveDaysWeatherList__item" data-weather="{{this.weather}}">
+    <li class="FiveDaysWeatherList__item">
         <p class="FiveDaysWeaterList__item--day">{{weekDay}}
             {{day}}
             {{month}}
         </p>
         <div class="FiveDaysWeaterList__item--date">{{dt_txt}}</div>
         <div>
-            <img class="FiveDaysWeaterList__item--icon" src="https://openweathermap.org/img/w/{{this.icon}}.png"
-                alt="weather-ico" />
+            <img class="FiveDaysWeaterList__item--icon" src="{{iconUrl}}" alt="{{weather.0.main}}" />
         </div>
         <div class="FiveDaysWeaterList__item--min-max-label">
             <span>min</span><span>max</span>
@@ -17,14 +16,26 @@
             <span>{{temp.min}} &deg;</span>
             <span>{{temp.max}} &deg;</span>
         </div>
-        <button class="FiveDaysWeaterList__item--moreBtn">
+        <button class="FiveDaysWeaterList__item--moreBtn js-more-info-btn">
             more info
         </button>
-        <div class="more__info--wrapper">
+        <div class="more__info--wrapper js-more-info-wrapper" style="display: none;">
             <ul>
+                {{#each moreInfo as |hourWeather|}}
+                <li>
+                    {{hourWeather.time}}
+                    <img src={{hourWeather.iconUrl}} alt={{hourWeather.weather.0.main}}>
+                    {{hourWeather.main.temp}}
+                    {{hourWeather.main.humidity}}
+                    {{hourWeather.wind.speed}}
 
+                </li>
+                {{/each}}
             </ul>
         </div>
+
     </li>
     {{/each}}
 </ul>
+<a href="#" class="js-show-chart">Show Chart</a>
+<canvas class="js-chart"></canvas>

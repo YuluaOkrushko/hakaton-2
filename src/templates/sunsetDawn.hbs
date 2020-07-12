@@ -1,16 +1,19 @@
-<p class="data__day">{{this.date}}</p>
+<p class="data__day">{{weekDay}}</p>
+{{day}}
+{{month}}
 <div class="data__wrapper">
     <div class="data__day--month">
-        <span class="month">{{this.day}}</span>
-        <span class="time">{{this.time}}</span>
+        <span class="month"></span>
+        <span class="time"></span>
     </div>
+    <div class="js-clock"></div>
     <ul class="data__sun">
         <li class="sunrise">
-            <img src="{{this.img}}" alt="sunrise" class="sunrise__icon" />
+            <img src="/image/sunrise.png" alt="sunrise" class="sunrise__icon" />
             <span class="sunrise__time">{{this.sunrise}}</span>
         </li>
         <li class="twilight">
-            <img src="./assets/icons/data__sunrise--sunset/sunset.svg" alt="sunset" class="twilight__icon" />
+            <img src="image/sunset.png" alt="sunset" class="twilight__icon" />
             <span class="twilight__time">{{this.sunset}}</span>
         </li>
     </ul>
