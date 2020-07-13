@@ -8,8 +8,7 @@ import favoriteCitiesTemplate from "./templates/favoriteCities.hbs";
 import Chart from "chart.js";
 
 let inputText = document.querySelector("#search-input");
-let fiveDaysButton = document.querySelector(".five-days");
-let todayButton = document.querySelector(".weather-today");
+
 let formSubmit = document.querySelector("#search-form");
 let weatherBlock = document.querySelector(".js-weather");
 
@@ -19,9 +18,9 @@ async function addBackgroundImage(weather) {
         const city = `city+${weather.name}`;
         const response = await imgSearchService(city);
         if (response.hits.length) {
-            document.querySelector("body").style.backgroundImage = `url(${
+            document.querySelector("body").style.background = `url(${
         response.hits[getRandomArbitrary(0, response.hits.length)].largeImageURL
-      })`;
+      }) no-repeat center center fixed`;
         }
     }
 }
@@ -89,6 +88,11 @@ function success(pos) {
 
         result.sunrise = sunriseH + ":" + sunriseM;
         weatherBlock.innerHTML = currentWeather(result);
+        document
+            .querySelector(".five-days")
+            .addEventListener("click", weatherButton);
+        document.querySelector(".weather-today").addEventListener("click", search);
+
         document.querySelector(".js-current-sunset").innerHTML = sunsetDawn(result);
         inputText.value = result.name;
         clockInterval = setInterval(clock, 500);
@@ -144,6 +148,11 @@ const getWeatherByCity = async(city) => {
         result.sunrise = sunriseH + ":" + sunriseM;
         addBackgroundImage(result);
         weatherBlock.innerHTML = currentWeather(result);
+        document
+            .querySelector(".five-days")
+            .addEventListener("click", weatherButton);
+        document.querySelector(".weather-today").addEventListener("click", search);
+
         document.querySelector(".js-current-sunset").innerHTML = sunsetDawn(result);
         clockInterval = setInterval(clock, 500);
     }
@@ -169,6 +178,8 @@ const weatherMoreInfo = async(city) => {
             value.time = time;
             value.temp_min = parseInt(value.main.temp_min);
             value.temp_max = parseInt(value.main.temp_max);
+            value.main.temp = parseInt(value.main.temp);
+
             value.iconUrl = prepareWeatherIconUrl(value.weather[0].icon, "@2x");
             if (prop in hourlyWeather) {
                 hourlyWeather[prop].push(value);
@@ -185,28 +196,34 @@ let weatherButton = async(event) => {
     clearInterval(clockInterval);
     if (inputText.value) {
         let result = await currentWeatherData(inputText.value);
+        const dailyWeather = new Object();
+        dailyWeather.city = result.name;
+        dailyWeather.country = result.sys.country;
+
         result = await fiveDaysWeather(result.coord.lon, result.coord.lat);
-        const dailyWeather = result.daily.slice(1, 6);
+
+        dailyWeather.data = result.daily.slice(1, 6);
         const moreInfo = await weatherMoreInfo(inputText.value);
-        dailyWeather.map((value, index) => {
+        dailyWeather.data.map((value, index) => {
             const date = new Date(value.dt * 1000);
-            dailyWeather[index].weekDay = date.toLocaleString("en", {
+            dailyWeather.data[index].weekDay = date.toLocaleString("en", {
                 weekday: "long",
             });
-            dailyWeather[index].day = date.toLocaleString("en", {
+            dailyWeather.data[index].day = date.toLocaleString("en", {
                 day: "numeric",
             });
-            dailyWeather[index].month = date.toLocaleString("en", {
+            dailyWeather.data[index].month = date.toLocaleString("en", {
                 month: "short",
             });
-            dailyWeather[index].iconUrl = prepareWeatherIconUrl(
+            dailyWeather.data[index].iconUrl = prepareWeatherIconUrl(
                 value.weather[0].icon,
                 "@2x"
             );
-            dailyWeather[index].temp.min = parseInt(value.temp.min);
-            dailyWeather[index].temp.max = parseInt(value.temp.max);
+            dailyWeather.data[index].temp.min = parseInt(value.temp.min);
+            dailyWeather.data[index].temp.max = parseInt(value.temp.max);
 
-            dailyWeather[index].moreInfo = moreInfo[Object.keys(moreInfo)[index]];
+            dailyWeather.data[index].moreInfo =
+                moreInfo[Object.keys(moreInfo)[index]];
         });
 
         addBackgroundImage(result);
@@ -214,15 +231,30 @@ let weatherButton = async(event) => {
 
         document.querySelectorAll(".js-more-info-btn").forEach((element) => {
             element.addEventListener("click", (event) => {
-                let moreInfoBlock = event.target.nextElementSibling;
+                event.preventDefault();
+                document
+                    .querySelectorAll(
+                        `.js-more-info-wrapper:not([data-item="${event.target.dataset.item}"])`
+                    )
+                    .forEach((item) => {
+                        item.style.display = "none";
+                    });
+                let moreInfoBlock = document.querySelector(
+                    `.js-more-info-wrapper[data-item="${event.target.dataset.item}"]`
+                );
                 if (moreInfoBlock.style.display == "none") {
-                    moreInfoBlock.style.display = "block";
+                    moreInfoBlock.style.display = "flex";
                 } else {
                     moreInfoBlock.style.display = "none";
                 }
             });
         });
-        initCharts(dailyWeather);
+        document
+            .querySelector(".five-days")
+            .addEventListener("click", weatherButton);
+        document.querySelector(".weather-today").addEventListener("click", search);
+
+        initCharts(dailyWeather.data);
     } else {
         weatherBlock.innerHTML = "";
     }
@@ -247,8 +279,6 @@ const geolocationWeather = () => {
     navigator.geolocation.getCurrentPosition(success);
 };
 formSubmit.addEventListener("submit", search);
-fiveDaysButton.addEventListener("click", weatherButton);
-todayButton.addEventListener("click", search);
 
 document
     .querySelector(".js-current-geolocation")
@@ -286,7 +316,9 @@ const renderFavorites = () => {
         item.addEventListener("click", (event) => {
             let favorites = window.localStorage.getItem("favorites");
             favorites = JSON.parse(favorites);
-            let index = favorites.indexOf(event.target.previousElementSibling.text);
+            let index = favorites.indexOf(
+                event.currentTarget.previousElementSibling.text
+            );
             favorites.splice(index, 1);
             window.localStorage.setItem("favorites", JSON.stringify(favorites));
             renderFavorites();
@@ -301,12 +333,12 @@ const initCharts = (dailyWeather) => {
         .addEventListener("click", (event) => {
             event.preventDefault();
             let chartBlock = document.querySelector(".chart-wrapper");
-            if (chartBlock.style.display == "none") {
-                chartBlock.style.display = "block";
-                event.target.text = "Hide chart";
+            if (!chartBlock.classList.contains("active")) {
+                chartBlock.classList.add("active");
+                event.target.text = "Hide Chart";
             } else {
-                event.target.text = "Show chart";
-                chartBlock.style.display = "none";
+                chartBlock.classList.remove("active");
+                event.target.text = "Show Chart";
             }
         });
 
@@ -325,7 +357,7 @@ const initCharts = (dailyWeather) => {
         pressureData.push(item.pressure);
     });
     let datasets = [{
-            label: "Temperature ",
+            label: "Temperature, C°",
             data: temperatureData,
             borderColor: "rgb(255, 207, 8)",
             fill: false,
@@ -364,3 +396,4 @@ const initCharts = (dailyWeather) => {
     };
     let lineChart = new Chart(ctx, config);
 };
+geolocationWeather();

@@ -1,20 +1,27 @@
-<p class="data__day">{{weekDay}}</p>
-{{day}}
-{{month}}
-<div class="data__wrapper">
-    <div class="data__day--month">
-        <span class="month"></span>
-        <span class="time"></span>
+<div class="sunset-quote">
+    <div class="sunset-wrapper">
+        <div class="data__day">{{day}} {{weekDay}}</div>
+        <div class="data__wrapper">
+            <div class="data__day--month">
+                <span class="month">{{month}}</span> |
+                <span class="time">
+                    <div class="js-clock"></div>
+                </span>
+            </div>
+            <div class="data__sun">
+                <div class="sunrise">
+                    <img src="./image/sunrise.png" alt="sunrise" class="sunrise__icon" />
+                    <span class="sunrise__time">{{this.sunrise}}</span>
+                </div> |
+                <div class="twilight">
+                    <img src="./image/sunset.png" alt="sunset" class="twilight__icon" />
+                    <span class="twilight__time">{{this.sunset}}</span>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="js-clock"></div>
-    <ul class="data__sun">
-        <li class="sunrise">
-            <img src="../src/image/sunrise.png" alt="sunrise" class="sunrise__icon" />
-            <span class="sunrise__time">{{this.sunrise}}</span>
-        </li>
-        <li class="twilight">
-            <img src="../src/image/sunset.png" alt="sunset" class="twilight__icon" />
-            <span class="twilight__time">{{this.sunset}}</span>
-        </li>
-    </ul>
+    <div class="quote-wrapper">
+        <p class="quote"> Who cares about the clouds when we're together? Just sing a song and bring
+            the sunny weather.</p><span class="author">Dale Evans</span>
+    </div>
 </div>
