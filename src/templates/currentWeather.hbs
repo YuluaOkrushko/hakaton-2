@@ -1,27 +1,37 @@
-<div class="current-temperature">
-    <div class="today-current-temperature">{{main.temp}}</div>
-    <sup class="degree-symbol">&deg;</sup>
+<div class="weather-info" id="weather-info-today-init">
+    <div class="weather-today-wrapper">
+        <img src="{{this.iconUrl}}" alt="{{this.weather.0.main}}">
+        <div class="weather-today-city">
+            {{this.name}}, {{this.sys.country}}
+        </div>
+        <div class="current-temperature">
+            <div class="today-current-temperature">{{main.temp}}&deg;</div>
+        </div>
+
+        <ul class="minimax-block">
+            <li class="today-min-temperature minimax">
+                <span>min: </span>
+                <div>
+                    <p id="today-min">{{this.main.temp_min}} &deg;</p>
+                </div>
+            </li>
+            <li class="today-max-temperature minimax">
+                <span>max: </span>
+                <div>
+                    <p id="today-max">{{this.main.temp_max}} &deg;</p>
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>
-<img src="{{this.iconUrl}}" alt="{{this.weather.0.main}}">
-
-{{this.name}}, {{this.sys.country}}
-
-<ul class="minimax-block">
-
-    <li class="today-min-temperature minimax">
-        <span>min: </span>
-        <div>
-            <p id="today-min">{{this.main.temp_min}}</p>
-            &deg;
-        </div>
-    </li>
-    <li class="today-max-temperature minimax">
-        <span>max: </span>
-        <div>
-            <p id="today-max">{{this.main.temp_max}}</p>
-            &deg;
-        </div>
-    </li>
-</ul>
-
+<div class="buttons-wrapper">
+    <div class="show-today-or-5-days-buttons">
+        <button class="weather-button weather-today weather-button-active">
+            today
+        </button>
+        <button class="weather-button five-days">
+            5 days
+        </button>
+    </div>
+</div>
 <div class="js-current-sunset"></div>

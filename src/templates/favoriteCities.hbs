@@ -1,8 +1,10 @@
-<ul>
+<ul class="favorite_all">
     {{#each this as |item|}}
-    <li>
+    <li class="favorite">
         <a class="js-favorite-item" href="#">{{item}} </a>
-        <span class="js-remove-from-favorites">x</span>
+        <span class="js-remove-from-favorites">
+            <img src="./image/close.png" alt="close">
+        </span>
     </li>
     {{/each}}
 </ul>

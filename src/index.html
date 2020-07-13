@@ -6,32 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Webpack Starter Kit</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet" />
 </head>
 
 <body>
-    <div id="wrapper-body" style="display: block;">
-        <div class="container">
-            <div class="input-form">
-                <form class="search__form" id="search-form">
-                    <a href="#" class="js-current-geolocation"><img src="../src/image/location_searching.svg" alt="geo" /></a>
-                    <input id="search-input" type="text" value="" name="city" placeholder="Enter the city" />
-                    <a href="#" class="js-save-to-favorites"><img src="../src/image/star_border.svg" alt="star" /></a>
-                </form>
-            </div>
-            <div class="favorite-wrapper"></div>
-        </div>
-
-        <div class="show-today-or-5-days-buttons">
-            <button class="weather-button weather-today weather-button-active">
-          today
-        </button>
-            <button class="weather-button five-days weather-button-unactive">
-          5 days
-        </button>
-        </div>
-        <div class="js-weather"></div>
+    <div class="form-container">
+        <form class="search__form" id="search-form">
+            <a href="#" class="js-current-geolocation">
+                <img src="./image/baseline_location_searching_black_24dp.png" alt="location" />
+            </a>
+            <input id="search-input" class="search-input" type="text" value="" name="city" placeholder="Enter the city" />
+            <a href="#" class="js-save-to-favorites">
+                <img src="./image/star_border.svg" alt="location" />
+            </a>
+        </form>
+        <div class="favorite-wrapper"></div>
     </div>
-    <!-- <script src="index.js"></script> -->
+    <div class="js-weather"></div>
 </body>
 
 </html>

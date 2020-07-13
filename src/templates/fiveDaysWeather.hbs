@@ -1,43 +1,76 @@
-<ul class="Five-days-list">
-    {{#each this}}
-    <li class="FiveDaysWeatherList__item">
-        <p class="FiveDaysWeaterList__item--day">{{weekDay}}
-            {{day}}
-            {{month}}
-        </p>
-        <div class="FiveDaysWeaterList__item--date">{{dt_txt}}</div>
-        <div>
-            <img class="FiveDaysWeaterList__item--icon" src="{{iconUrl}}" alt="{{weather.0.main}}" />
+<div class="five-days-wrapper">
+    <div class="title-wrapper">
+        <div class="title">{{this.city}}, {{this.country}}</div>
+        <div class="five-days-buttons-wrapper">
+            <button class="weather-button weather-today ">
+                today
+            </button>
+            <button class="weather-button five-days weather-button-active">
+                5 days
+            </button>
         </div>
-        <div class="FiveDaysWeaterList__item--min-max-label">
-            <span>min</span><span>max</span>
-        </div>
-        <div class="FiveDaysWeaterList__item--min-max">
-            <span>{{temp.min}} &deg;</span>
-            <span>{{temp.max}} &deg;</span>
-        </div>
-        <button class="FiveDaysWeaterList__item--moreBtn js-more-info-btn">
-            more info
-        </button>
-        <div class="more__info--wrapper js-more-info-wrapper" style="display: none;">
-            <ul>
-                {{#each moreInfo as |hourWeather|}}
-                <li>
-                    {{hourWeather.time}}
-                    <img src={{hourWeather.iconUrl}} alt={{hourWeather.weather.0.main}}>
-                    {{hourWeather.main.temp}}
-                    {{hourWeather.main.humidity}}
-                    {{hourWeather.wind.speed}}
+    </div>
+    <div class="five-days-weather-wrapper">
+        <ul class="five-days-list">
+            {{#each this.data}}
 
-                </li>
-                {{/each}}
-            </ul>
-        </div>
+            <li class="five-days__item">
+                <div class="week-day">
+                    {{weekDay}}
+                </div>
+                <div class="day-month">
+                    {{day}} {{month}}
+                </div>
+                <div>
+                    <img class="five-days__item--icon" src="{{iconUrl}}" alt="{{weather.0.main}}" />
+                </div>
+                <div class="five-temperature">
+                    <div class="five-min-temp">
+                        <span class="min-max">min</span>
+                        <span class="temp">{{temp.min}}&deg;</span>
+                    </div>
+                    <div class="five-max-temp">
+                        <span class="min-max">max</span>
+                        <span class="temp">{{temp.max}}&deg;</span>
+                    </div>
+                </div>
+                <a href="#" class="more-info-btn js-more-info-btn" data-item={{@index}}>
+                    more info
+                </a>
 
-    </li>
-    {{/each}}
-</ul>
-<a href="#" class="js-show-chart">Show Chart</a>
-<div class="chart-wrapper" style="display: none;">
-    <canvas class="js-chart"></canvas>
+            </li>
+
+            {{/each}}
+        </ul>
+        {{#each this.data}}
+        <ul class="more__info--wrapper js-more-info-wrapper" style="display: none;" data-item={{@index}}>
+            {{#each moreInfo as |hourWeather|}}
+            <li class="more-info-item">
+                <div class="more-time"> {{hourWeather.time}}</div>
+                <img src={{hourWeather.iconUrl}} alt={{hourWeather.weather.0.main}}>
+                <div class="more-temp"> {{hourWeather.main.temp}}&deg;</div>
+                <div class="more-icons-wrapper">
+                    <div class="more-icons">
+                        <div class="more-pressure-icon"> </div>
+                        <div class="more-humidity-icon"> </div>
+                        <div class="more-wind-speed-icon"></div>
+                    </div>
+                    <div class="more-values">
+                        <div class="more-pressure"> {{hourWeather.main.pressure}} mm</div>
+                        <div class="more-humidity"> {{hourWeather.main.humidity}}%</div>
+                        <div class="more-wind-speed"> {{hourWeather.wind.speed}} m/s</div>
+                    </div>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+        {{/each}}
+    </div>
+    <div class="chart-wrapper">
+        <div class="show-chart-wrapper">
+            <a href="#" class="js-show-chart">Show Chart </a><span class="js-show-chart-icon"></span>
+        </div>
+        <canvas class="js-chart"></canvas>
+    </div>
+</div>
 </div>
