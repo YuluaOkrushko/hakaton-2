@@ -3,7 +3,8 @@
         <div class="data__day">{{day}} {{weekDay}}</div>
         <div class="data__wrapper">
             <div class="data__day--month">
-                <span class="month">{{month}}</span> |
+                <span class="month">{{month}} </span>
+                <span class="month-stick">|</span>
                 <span class="time">
                     <div class="js-clock"></div>
                 </span>
@@ -11,8 +12,9 @@
             <div class="data__sun">
                 <div class="sunrise">
                     <img src="./image/sunrise.png" alt="sunrise" class="sunrise__icon" />
-                    <span class="sunrise__time">{{this.sunrise}}</span>
-                </div> |
+                    <span class="sunrise__time">{{this.sunrise}} </span>
+                    <span class="sunrise-stick">|</span>
+                </div>
                 <div class="twilight">
                     <img src="./image/sunset.png" alt="sunset" class="twilight__icon" />
                     <span class="twilight__time">{{this.sunset}}</span>
